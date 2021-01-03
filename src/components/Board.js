@@ -1,25 +1,23 @@
 import Square from './Square';
 
-const Board = () => {
+const Board = (props) => {
 	const renderSquare = (i) =>
-		<Square value={i} />;
+		<Square
+			value={props.squares[i]}
+			key={i}
+			onClick={() => props.onClick(i)}
+		/>;
+	const renderRow = (start) =>
+		<div className="board-row">
+			{Array.from(Array(3), (_, index) => (
+				renderSquare(start + index)
+			))}
+		</div>;
 	return (
 		<div>
-			<div className="board-row">
-				{renderSquare(0)}
-				{renderSquare(1)}
-				{renderSquare(2)}
-			</div>
-			<div className="board-row">
-				{renderSquare(3)}
-				{renderSquare(4)}
-				{renderSquare(5)}
-			</div>
-			<div className="board-row">
-				{renderSquare(6)}
-				{renderSquare(7)}
-				{renderSquare(8)}
-			</div>
+			{renderRow(0)}
+			{renderRow(3)}
+			{renderRow(6)}
 		</div>
 	);
 };
