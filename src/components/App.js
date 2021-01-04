@@ -1,48 +1,38 @@
-import React from 'react';
+import { useState } from 'react';
 import Board from './Board';
 import './App.css';
 
-class App extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			squares: Array(9).fill(null),
-			xIsNext: true,
-			finished: false
-		};
-		this.handleClick = this.handleClick.bind(this);
-	}
-	handleClick(i) {
-		const squares = [...this.state.squares];
-		if (squares[i]) { return; }
-		if (this.state.finished) { return; }
-		squares[i] = this.state.xIsNext ? 'X' : 'O';
-		this.setState({
-			squares: squares,
-			xIsNext: !this.state.xIsNext
-		});
-		const winner = calculateWinner(squares);
+function App() {
+	const [squares, setSquares] = useState(Array(9).fill(null));
+	const [xIsNext, setXIsNext] = useState(true);
+	const [finished, setFinished] = useState(false);
+	const handleClick = (i) => {
+		const _squares = [...squares];
+		if (_squares[i]) { return; }
+		if (finished) { return; }
+		_squares[i] = xIsNext ? 'X' : 'O';
+		setSquares(_squares);
+		setXIsNext(!xIsNext);
+		const winner = calculateWinner(_squares);
 		if (winner) {
-			this.setState({finished: true});
+			setFinished(true);
 		}
 	};
-	render() {
-		const winner = calculateWinner(this.state.squares);
-		const status = (winner) ?
-			`Winner: ${winner}` :
-			`Next player: ${this.state.xIsNext ? 'X' : 'O'}`;
-		return (
-			<div className="game">
-				<Board
-					squares={this.state.squares}
-					onClick={(i) => this.handleClick(i)}
-				/>
-				<div className="game-info">
-					<div>{status}</div>
-				</div>
+	const winner = calculateWinner(squares);
+	const status = (winner) ?
+		`Winner: ${winner}` :
+		`Next player: ${xIsNext ? 'X' : 'O'}`;
+	return (
+		<div className="game">
+			<Board
+				squares={squares}
+				onClick={(i) => handleClick(i)}
+			/>
+			<div className="game-info">
+				<div>{status}</div>
 			</div>
-		);
-	};
+		</div>
+	);
 }
 
 function calculateWinner(squares) {
