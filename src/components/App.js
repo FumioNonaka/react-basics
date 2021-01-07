@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { createContext, useState } from 'react';
 import Board from './Board';
 import './App.css';
 
+const initialContext = { squares: Array(9).fill(null) };
+export const GameContext = createContext(initialContext);
 function App() {
 	const [squares, setSquares] = useState(Array(9).fill(null));
 	const [xIsNext, setXIsNext] = useState(true);
@@ -23,15 +25,17 @@ function App() {
 		`Winner: ${winner}` :
 		`Next player: ${xIsNext ? 'X' : 'O'}`;
 	return (
-		<div className="game">
-			<Board
-				squares={squares}
-				onClick={(i) => handleClick(i)}
-			/>
-			<div className="game-info">
-				<div>{status}</div>
+		<GameContext.Provider value={{squares, onClick: handleClick}}>
+			<div className="game">
+				<Board
+					squares={squares}
+					onClick={(i) => handleClick(i)}
+				/>
+				<div className="game-info">
+					<div>{status}</div>
+				</div>
 			</div>
-		</div>
+		</GameContext.Provider>
 	);
 }
 
