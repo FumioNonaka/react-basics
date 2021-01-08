@@ -1,5 +1,6 @@
 import { createContext, useState } from 'react';
 import Board from './Board';
+import GameInfo from './GameInfo';
 import './App.css';
 
 const initialContext = { squares: Array(9).fill(null) };
@@ -8,6 +9,7 @@ function App() {
 	const [squares, setSquares] = useState(Array(9).fill(null));
 	const [xIsNext, setXIsNext] = useState(true);
 	const [finished, setFinished] = useState(false);
+	const [winner, setWinner] = useState(initialContext.winner);
 	const handleClick = (i) => {
 		const _squares = [...squares];
 		if (_squares[i]) { return; }
@@ -15,25 +17,20 @@ function App() {
 		_squares[i] = xIsNext ? 'X' : 'O';
 		setSquares(_squares);
 		setXIsNext(!xIsNext);
-		const winner = calculateWinner(_squares);
-		if (winner) {
+		const _winner = calculateWinner(_squares);
+		setWinner(_winner);
+		if (_winner) {
 			setFinished(true);
 		}
 	};
-	const winner = calculateWinner(squares);
-	const status = (winner) ?
-		`Winner: ${winner}` :
-		`Next player: ${xIsNext ? 'X' : 'O'}`;
 	return (
-		<GameContext.Provider value={{squares, onClick: handleClick}}>
+		<GameContext.Provider value={{xIsNext, squares, winner, onClick: handleClick}}>
 			<div className="game">
 				<Board
 					squares={squares}
 					onClick={(i) => handleClick(i)}
 				/>
-				<div className="game-info">
-					<div>{status}</div>
-				</div>
+				<GameInfo />
 			</div>
 		</GameContext.Provider>
 	);
