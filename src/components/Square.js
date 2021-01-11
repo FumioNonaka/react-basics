@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { GameContext } from './App';
+import { GameContext } from './GameContext';
 
 const Square = ({ id }) => {
 	const { onClick, squares } = useContext(GameContext);

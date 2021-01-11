@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { GameContext } from './App';
+import { GameContext } from './GameContext';
 
 const GameInfo = () => {
 	const { winner, xIsNext } = useContext(GameContext);
