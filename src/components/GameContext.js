@@ -20,7 +20,6 @@ export const GameProvider = ({ children }) => {
 		const _history = history.slice(0, stepNumber + 1);
 		const _squares = [..._history[_history.length - 1].squares];
 		if (_squares[i]) { return; }
-		if (finished) { return; }
 		_squares[i] = xIsNext ? 'X' : 'O';
 		setHistory([..._history, { squares: _squares }]);
 		setXIsNext(!xIsNext);
@@ -28,6 +27,8 @@ export const GameProvider = ({ children }) => {
 		const _winner = calculateWinner(_squares);
 		setWinner(_winner);
 		if (_winner) {
+			setFinished(true);
+		} else if (_history.length >= 9) {
 			setFinished(true);
 		}
 	};
@@ -42,6 +43,7 @@ export const GameProvider = ({ children }) => {
 		<GameContext.Provider
 			value={{
 				onClick: handleClick,
+				finished,
 				jumpTo,
 				calculateWinner,
 				history,
