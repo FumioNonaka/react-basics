@@ -2,13 +2,13 @@ import { useContext } from 'react';
 import { GameContext } from './GameContext';
 
 const Square = ({ id }) => {
-	const { onClick, history, stepNumber } = useContext(GameContext);
+	const { onClick, finished, history, stepNumber } = useContext(GameContext);
 	const squares = [...history[stepNumber].squares];
 	return (
 		<button
 			type="button"
 			className="square"
-			onClick={() => onClick(id)}
+			onClick={finished ? null : () => onClick(id)}
 		>
 			{squares[id]}
 		</button>
