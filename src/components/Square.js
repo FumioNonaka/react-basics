@@ -1,9 +1,9 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { GameContext } from './GameContext';
 
 const Square = ({ id }) => {
 	const { onClick, finished, history, stepNumber } = useContext(GameContext);
-	const squares = [...history[stepNumber].squares];
+	const squares = useMemo(() => [...history[stepNumber].squares], [history, stepNumber]);
 	return (
 		<button
 			type="button"
